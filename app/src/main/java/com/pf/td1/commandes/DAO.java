@@ -1,8 +1,10 @@
 package com.pf.td1.commandes;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.ArrayList;
 
@@ -53,38 +55,63 @@ public class DAO {
      * ensemble des différents produits commandés
      */
     public Set<Produit> produits() {
-        return commandes.stream()
-                .flatMap(c -> c.lignes().stream())
-                .map(Paire::fst)
-                .collect(Collectors.toSet());
+        Set<Produit> rtr = new HashSet<>();
+        for(Commande c : commandes){
+            for(Paire<Produit,Integer>lignes : c.lignes()){
+                rtr.add(lignes.fst());
+            }
+        }
+
+        return rtr;
     }
 
     /**
      * liste des commandes vérifiant un prédicat
      */
     public List<Commande> selectionCommande(Predicate<Commande> p) {
-        return commandes.stream()
-            .filter(p)
-            .collect(Collectors.toList());
+        List<Commande> res = new ArrayList<Commande>();
+        for (Commande c : commandes){
+          if(p.test(c))
+              res.add(c);
+
+        }
+
+        return res;
     }
 
     /**
      * liste des commandes dont au moins une ligne vérifie un prédicat
      */
     public List<Commande> selectionCommandeSurExistanceLigne(Predicate<Paire<Produit,Integer>> p) {
-        return commandes.stream()
-            .filter(c -> c.lignes().stream().anyMatch(p))
-            .collect(Collectors.toList());
+        List<Commande> res = new ArrayList<Commande>();
+
+        for (Commande c : commandes){
+            for(Paire<Produit,Integer> paire : c.lignes()){
+                if(p.test(paire)){
+                    res.add(c);
+                }
+            }
+        }
+        return res;
     }
 
     /**
      * ensemble des différents produits commandés vérifiant un prédicat
      */
     public Set<Produit> selectionProduits(Predicate<Produit> p) {
-        return produits()
-            .stream()
-            .filter(p)
-            .collect(Collectors.toSet());
+
+        Set<Produit> pdt = new HashSet<>();
+        for(Commande c : commandes){
+
+                for(Paire<Produit,Integer>lignes : c.lignes()){
+                    if (p.test(lignes.fst())){
+                        pdt.add(lignes.fst());
+                    }
+
+                }
+        }
+
+        return pdt;
     }
 
 }
