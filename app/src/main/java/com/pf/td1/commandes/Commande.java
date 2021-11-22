@@ -65,6 +65,9 @@ public class Commande {
         return rtr;
     }
 
+    public Double cout2(Function<Paire<Produit,Integer>,Double> calculLigne) {
+        return normaliser().lignes.stream().map(l -> calculLigne.apply(l)).reduce(0.0, (x,y) -> x+y);
+
 
 
     public String affiche(Function<Paire<Produit, Integer>, Double> calculLigne) {
