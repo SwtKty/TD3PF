@@ -34,6 +34,7 @@ public class Commande {
         return str.toString();
     }
 
+
     /**
      * cumule les lignes en fonction des produits
      */
@@ -81,6 +82,13 @@ public class Commande {
         }
         str.append(HLINE);
         str.append(String.format("Total : %10.2f", c.cout(calculLigne)));
+        return str.toString();
+    }
+
+    public String formateurLigne (Paire<Produit, Integer> ligne){
+        StringBuilder str = new StringBuilder();
+        str.append(String.format("%s x%d\n", ligne.fst(), ligne.snd()));
+
         return str.toString();
     }
 
