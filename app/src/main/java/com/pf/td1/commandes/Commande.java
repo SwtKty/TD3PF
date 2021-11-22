@@ -12,9 +12,11 @@ import com.pf.td1.paires.Paire;
 public class Commande {
     private List<Paire<Produit, Integer>> lignes;
     private Function<Paire<Produit,Integer>, String > formatteurLigne;
+    private static Function <Paire<Produit,Integer>,String> defauktformateur= p-> String.format("produit=%s et dte=%d\n",p.fst(), p.snd());
 
     public Commande() {
         this.lignes = new ArrayList<>();
+        this.formatteurLigne=defauktformateur;
     }
 
     public Commande ajouter(Produit p, int q) {
