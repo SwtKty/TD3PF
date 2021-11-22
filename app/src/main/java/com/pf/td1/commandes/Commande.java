@@ -10,6 +10,7 @@ import com.pf.td1.paires.Paire;
 
 public class Commande {
     private List<Paire<Produit, Integer>> lignes;
+    private Function<Paire<Produit,Integer>, String > formatteurLigne;
 
     public Commande() {
         this.lignes = new ArrayList<>();
@@ -33,6 +34,7 @@ public class Commande {
         }
         return str.toString();
     }
+
 
 
     /**
@@ -64,6 +66,8 @@ public class Commande {
         return rtr;
     }
 
+
+
     public String affiche(Function<Paire<Produit, Integer>, Double> calculLigne) {
         Commande c = this.normaliser();
         final String HLINE = "+------------+------------+-----+------------+--------+------------+\n";
@@ -85,11 +89,5 @@ public class Commande {
         return str.toString();
     }
 
-    public String formateurLigne (Paire<Produit, Integer> ligne){
-        StringBuilder str = new StringBuilder();
-        str.append(String.format("%s x%d\n", ligne.fst(), ligne.snd()));
-
-        return str.toString();
-    }
 
 }
